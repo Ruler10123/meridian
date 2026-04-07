@@ -13,6 +13,7 @@
 # limitations under the License.
 
 """Constants specific to MeridianEDA."""
+import textwrap
 from typing import Literal
 import altair as alt
 import immutabledict
@@ -161,6 +162,7 @@ SPEND_AND_MEDIA_UNIT_CARD_ID = 'spend-and-media-unit'
 SPEND_AND_MEDIA_UNIT_CARD_TITLE = 'Spend and Media Unit'
 RELATIVE_SPEND_SHARE_CHART_ID = 'relative-spend-share-chart'
 SPEND_PER_MEDIA_UNIT_CHART_ID = 'spend-per-media-unit-chart'
+DATA_ADEQUACY_TABLE_ID = 'data-adequacy-table'
 INCONSISTENT_DATA_TABLE_ID = 'inconsistent-data-table'
 COST_PER_MEDIA_UNIT_OUTLIER_TABLE_ID = 'cost-per-media-unit-outlier-table'
 # category 2
@@ -341,6 +343,18 @@ PRIOR_PROBABILITY_REPORT_INFO = (
     ' priors. In particular, a custom `contribution prior` type may be'
     ' appropriate.<br/><br/>'
 )
+DATA_ADEQUACY_INFO = textwrap.dedent("""\
+As a rough guidance, please review the ratio of data points to
+parameters, where
+* the number of data points = n_geos * n_times,
+* the number of parameters = (n_geos-1) + n_knots + n_controls + n_treatments.
+
+A very small ratio indicates insufficient data for estimation.
+In that case, consider dropping or combining channels,
+or reducing the number of knots with `knots` argument in `ModelSpec`.
+For more details, please refer to this documentation page:
+https://developers.google.com/meridian/docs/pre-modeling/amount-data-needed.""")
+
 # The boolean keys indicate whether findings were detected (True) or
 # not (False), and the values are the corresponding message that should be
 # displayed. Example, if there were errors or reviews in the spend and media
