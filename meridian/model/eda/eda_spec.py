@@ -17,8 +17,11 @@
 import dataclasses
 from typing import Any, Callable, Dict, TypeAlias
 
+from meridian.model.eda import constants as eda_constants
+
 __all__ = [
     "AggregationConfig",
+    "PairwiseCorrSpec",
     "VIFSpec",
     "EDASpec",
 ]
@@ -51,6 +54,26 @@ class AggregationConfig:
 
 
 @dataclasses.dataclass(frozen=True, kw_only=True)
+class PairwiseCorrSpec:
+  """A spec for the EDA pairwise correlation check.
+
+  Attributes:
+    overall_error_threshold: The threshold for overall pairwise correlation
+      error.
+    geo_attention_threshold: The threshold for geo-level pairwise correlation
+      attention.
+    national_error_threshold: The threshold for national pairwise correlation
+      error.
+  """
+
+  overall_error_threshold: float = eda_constants.OVERALL_PAIRWISE_CORR_THRESHOLD
+  geo_attention_threshold: float = eda_constants.GEO_PAIRWISE_CORR_THRESHOLD
+  national_error_threshold: float = (
+      eda_constants.NATIONAL_PAIRWISE_CORR_THRESHOLD
+  )
+
+
+@dataclasses.dataclass(frozen=True, kw_only=True)
 class VIFSpec:
   """A spec for the EDA VIF check.
 
@@ -75,10 +98,15 @@ class EDASpec:
 
   Attributes:
     aggregation_config: A configuration object for custom aggregation functions.
+    pairwise_corr_spec: A configuration object for the EDA pairwise correlation
+      check.
     vif_spec: A configuration object for the EDA VIF check.
   """
 
   aggregation_config: AggregationConfig = dataclasses.field(
       default_factory=AggregationConfig
+  )
+  pairwise_corr_spec: PairwiseCorrSpec = dataclasses.field(
+      default_factory=PairwiseCorrSpec
   )
   vif_spec: VIFSpec = dataclasses.field(default_factory=VIFSpec)
